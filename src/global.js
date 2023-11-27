@@ -8,6 +8,8 @@ let Tween;
 // constants
 const TILE_SIZE = 35;
 const ALIEN_SIZE = TILE_SIZE;
+const MAP_SCROLL_X_SPEED = 100;
+const BACKGROUND_SCROLL_X_SPEED = MAP_SCROLL_X_SPEED / 2;
 
 // game setup
 const canvas = document.getElementById('canvas');
@@ -24,7 +26,7 @@ const gSounds = {};
 
 let gStateMachine;
 
-// control the input
+// define control the input
 const input = {
 	mouse: {
 		keysPressed: {},
@@ -36,5 +38,9 @@ const input = {
 	},
 	keyboard: {
 		keysPressed: {},
+		isDown: {
+			j: false,
+			k: false,
+		},
 	},
 };

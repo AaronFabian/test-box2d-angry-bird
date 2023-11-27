@@ -43,7 +43,7 @@ export class AlienLaunchMarker {
 				this.alien = new Alien(this.world, 'circle', this.shiftedX, this.shiftedY, this.playerData);
 				this.alien.body.SetGravityScale(0.3);
 				this.alien.body.SetLinearVelocity(
-					new _Box2D.b2Vec2((this.baseX - this.shiftedX) * 30, (this.baseY - this.shiftedY) * 30)
+					new _Box2D.b2Vec2((this.baseX - this.shiftedX) * 2, (this.baseY - this.shiftedY) * 2)
 				);
 
 				// bounciness
@@ -59,14 +59,12 @@ export class AlienLaunchMarker {
 		} else if (this.launched) {
 			// code ...
 		}
-
-		// console.log(input.mouse.x, input.mouse.y);
 	}
 
 	render() {
 		if (!this.launched) {
 			// render non physic alien
-			gFrames.aliens[8].drawImage(ctx, this.shiftedX - 17.5, this.shiftedY - 17.5);
+			gFrames.aliens[6].drawImage(ctx, this.shiftedX - 17.5, this.shiftedY - 17.5);
 		} else {
 			this.alien.render();
 		}

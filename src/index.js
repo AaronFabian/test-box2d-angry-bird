@@ -3,18 +3,31 @@ import { PlayState } from './states/PlayState.js';
 import { StartState } from './states/StartState.js';
 import { generateQuads, newHowler as newSound, newImage, newQuad } from './util.js';
 
-function animation() {
-	requestAnimationFrame(animation);
+let msPrev = window.performance.now();
+let fps = 120;
+let fpsInterval = 1000 / fps;
+function animation(time) {
+	const _ = requestAnimationFrame(animation);
 
-	update();
+	// this will treat all computer have the same execute speed
+	const msNow = window.performance.now();
+	const elapsed = msNow - msPrev;
+	if (elapsed < fpsInterval) return;
+	msPrev = msNow - (elapsed % fpsInterval);
+
+	// time is not dt like other game engine
+	// in this "time" is current time elapsed since game run
+	update(time);
 	render();
 }
 
 async function init() {
-	// make reference to the TWEEN library and make shorter name
+	// not make howler shorter
+
+	// make reference to the TWEEN library and make shorter name only for Tween function
 	Tween = TWEEN.Tween;
 
-	// await the library because Box2D function return promise
+	// await the Box2D library because Box2D function return promise
 	_Box2D = await Box2D();
 
 	// create and await all asset
@@ -62,10 +75,10 @@ async function init() {
 
 	// background music
 	gSounds.music.play();
-	gSounds.music.volume(0.5);
+	gSounds.music.volume(0.3);
 
 	// start all game
-	animation();
+	requestAnimationFrame(animation);
 }
 
 export function mouseWasPressed(key) {
@@ -80,8 +93,12 @@ export function keyboardWasPressed(key) {
 	return input.keyboard.keysPressed[key];
 }
 
-function update() {
-	TWEEN.update();
+export function keyboardIsDown(key) {
+	return input.keyboard.isDown[key];
+}
+
+function update(time) {
+	TWEEN.update(time);
 
 	gStateMachine.update();
 
@@ -108,7 +125,18 @@ window.addEventListener('keypress', ({ key }) => {
 	input.keyboard.keysPressed[key] = true;
 });
 
+window.addEventListener('keydown', ({ key }) => {
+	if (input.keyboard.isDown[key] === undefined) return;
+	input.keyboard.isDown[key] = true;
+});
+
+window.addEventListener('keyup', ({ key }) => {
+	if (input.keyboard.isDown[key] === undefined) return;
+	input.keyboard.isDown[key] = false;
+});
+
 canvas.addEventListener('mousemove', e => {
+	// e.target is canvas element
 	const rect = e.target.getBoundingClientRect();
 	const x = e.clientX - rect.x;
 	const y = e.clientY - rect.y;

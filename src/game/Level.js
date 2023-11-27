@@ -55,12 +55,13 @@ export class Level {
 			// collided between obstacle and alien (enemy)
 			if (types[Level.#OBSTACLE_ID] && types[Level.#ALIEN_ID]) {
 				const alienFixture = fixtureA.GetUserData() === Level.#ALIEN_ID ? fixtureA : fixtureB;
-				const obstacleFixture = fixtureB.GetUserData() === Level.#OBSTACLE_ID ? fixtureA : fixtureB;
+				const obstacleFixture = fixtureB.GetUserData() === Level.#ALIEN_ID ? fixtureA : fixtureB;
 
 				// destroy alien when alien from falling debris if debris is fast enough; debris mean obstacle
 				const { x: velX, y: velY } = obstacleFixture.GetBody().GetLinearVelocity();
 				const sumVel = Math.abs(velX) + Math.abs(velY);
-				if (sumVel > 20) {
+				// make it stronger otherwise game to easy
+				if (sumVel > 80) {
 					this.destroyedBody.push(alienFixture.GetBody());
 				}
 			}
@@ -76,6 +77,11 @@ export class Level {
 				if (sumVel > 20) {
 					this.destroyedBody.push(alienFixture.GetBody());
 				}
+			}
+
+			if (types[Level.#PLAYER_ID] && types[Level.#GROUND_ID]) {
+				gSounds.bounce.stop();
+				gSounds.bounce.play();
 			}
 		}.bind(this);
 
@@ -133,8 +139,8 @@ export class Level {
 		this.launchMarker.update();
 
 		const timeStep = 1 / 30;
-		const velocityIterations = 6;
-		const positionIterations = 2;
+		const velocityIterations = 20;
+		const positionIterations = 10;
 
 		this.world.Step(timeStep, velocityIterations, positionIterations);
 
@@ -160,7 +166,7 @@ export class Level {
 			if (!this.obstacles[i].body.IsActive()) {
 				this.obstacles.splice(i, 1);
 
-				const soundNum = Math.floor(Math.random() * 6);
+				const soundNum = Math.floor(Math.random() * 5 + 1);
 				gSounds['break' + soundNum].stop();
 				gSounds['break' + soundNum].play();
 			}
@@ -185,8 +191,6 @@ export class Level {
 	}
 
 	render() {
-		this.background.render();
-
 		this.launchMarker.render();
 
 		this.aliens.forEach(alien => alien.render());

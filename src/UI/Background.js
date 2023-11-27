@@ -1,3 +1,5 @@
+import { keyboardIsDown } from '../index.js';
+
 export class Background {
 	BACKGROUND_TYPES = [
 		'colored_land',
@@ -17,7 +19,13 @@ export class Background {
 	}
 
 	update() {
-		this.xOffset = this.xOffset % this.width;
+		if (keyboardIsDown('j')) {
+			this.xOffset += BACKGROUND_SCROLL_X_SPEED * 0.05;
+		} else if (keyboardIsDown('k')) {
+			this.xOffset -= BACKGROUND_SCROLL_X_SPEED * 0.05;
+		}
+
+		this.xOffset %= this.width;
 	}
 
 	render() {

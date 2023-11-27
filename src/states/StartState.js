@@ -90,8 +90,8 @@ export class StartState extends BaseState {
 		}
 
 		const timeStep = 1 / 30;
-		const velocityIterations = 6;
-		const positionIterations = 2;
+		const velocityIterations = 20;
+		const positionIterations = 10;
 
 		this.world.Step(timeStep, velocityIterations, positionIterations);
 	}

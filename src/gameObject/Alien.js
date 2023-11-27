@@ -27,7 +27,7 @@ export class Alien {
 		} else {
 			this.shape = new _Box2D.b2CircleShape();
 			this.shape.set_m_radius(17.5);
-			this.sprite = 8;
+			this.sprite = 6;
 		}
 
 		// fixture

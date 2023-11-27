@@ -19,8 +19,8 @@ export class StateMachine {
 		this.current.enter(enterParams);
 	}
 
-	update() {
-		this.current.update();
+	update(dt) {
+		this.current.update(dt);
 	}
 
 	render() {
