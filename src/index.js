@@ -1,4 +1,5 @@
 import { StateMachine } from './os/StateMachine.js';
+import { LoadingState } from './states/LoadingState.js';
 import { PlayState } from './states/PlayState.js';
 import { StartState } from './states/StartState.js';
 import { generateQuads, newHowler as newSound, newImage, newQuad } from './util.js';
@@ -22,7 +23,11 @@ function animation(time) {
 }
 
 async function init() {
-	// not make howler shorter
+	// draw loading screen
+	const loadingState = new LoadingState();
+	loadingState.render();
+
+	// did not make howler shorter ...
 
 	// make reference to the TWEEN library and make shorter name only for Tween function
 	Tween = TWEEN.Tween;
@@ -56,14 +61,14 @@ async function init() {
 	];
 
 	// create sound and sfx using Howler js
-	gSounds.break1 = newSound('./../sounds/break1.wav');
-	gSounds.break2 = newSound('./../sounds/break2.wav');
-	gSounds.break3 = newSound('./../sounds/break3.mp3');
-	gSounds.break4 = newSound('./../sounds/break4.wav');
-	gSounds.break5 = newSound('./../sounds/break5.wav');
-	gSounds.bounce = newSound('./../sounds/bounce.wav');
-	gSounds.kill = newSound('./../sounds/kill.wav');
-	gSounds.music = newSound('./../sounds/music.wav', true);
+	gSounds.break1 = await newSound('./../sounds/break1.wav');
+	gSounds.break2 = await newSound('./../sounds/break2.wav');
+	gSounds.break3 = await newSound('./../sounds/break3.mp3');
+	gSounds.break4 = await newSound('./../sounds/break4.wav');
+	gSounds.break5 = await newSound('./../sounds/break5.wav');
+	gSounds.bounce = await newSound('./../sounds/bounce.wav');
+	gSounds.kill = await newSound('./../sounds/kill.wav');
+	gSounds.music = await newSound('./../sounds/music.wav', true);
 
 	// re-assign global stateMachine and immediately change to startState
 	gStateMachine = new StateMachine({

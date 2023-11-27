@@ -59,7 +59,7 @@ export class PlayState extends BaseState {
 		// game hint
 		if (this.showUI) {
 			ctx.fillStyle = 'rgba(64,64,64,0.5)';
-			ctx.fillRect(10, 10, 255, 30);
+			ctx.fillRect(10, 10, 240, 30);
 
 			ctx.fillStyle = `rgba(255,255,255,${this.blinkOpacity})`;
 			ctx.font = '14px fontTTF';

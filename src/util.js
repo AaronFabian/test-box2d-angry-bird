@@ -54,8 +54,12 @@ export function generateQuads(imageObj, tileWidth, tileHeight) {
 }
 
 export function newHowler(src, loop = false) {
-	return new Howl({
-		src: [src],
-		loop: loop,
+	return new Promise((resolve, reject) => {
+		const howl = new Howl({
+			src: [src],
+			loop: loop,
+			onload: () => resolve(howl),
+			onerror: error => reject(error),
+		});
 	});
 }
